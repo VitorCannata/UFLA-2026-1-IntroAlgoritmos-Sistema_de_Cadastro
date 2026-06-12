@@ -58,11 +58,7 @@ int main(){
 				getline(entrada, vet_jogos[i].descricao, '"');
 				getline(entrada, linha); // ler o enter
 				
-				if (opção_impressão == 2){
-					cout << endl << vet_jogos[i].identificador << " " << vet_jogos[i].nome << " " << vet_jogos[i].ano_lancamento << " " 
-					<< vet_jogos[i].plataforma << " " << vet_jogos[i].descricao << endl;
-				}
-				if ((opção_impressão == 3) and ((i+1 >= início_impressão_partes) and (i+1 <= final_impressão_partes))){
+				if ((opção_impressão == 2) or ((opção_impressão == 3) and ((i+1 >= início_impressão_partes) and (i+1 <= final_impressão_partes)))){
 					cout << endl << vet_jogos[i].identificador << " " << vet_jogos[i].nome << " " << vet_jogos[i].ano_lancamento << " " 
 					<< vet_jogos[i].plataforma << " " << vet_jogos[i].descricao << endl;
 				}
