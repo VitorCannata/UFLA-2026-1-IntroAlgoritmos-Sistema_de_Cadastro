@@ -29,8 +29,8 @@ int main(){
 				entrada >> vet_jogos[i].identificador;
 				entrada.ignore(2); // ignora ; e abre aspas
 				getline(entrada, vet_jogos[i].nome, '"');
-				entrada.ignore(2);
-				entrada >> vet_jogos[i].ano_lancamento; // ta pegando errado
+				entrada.ignore(1);
+				entrada >> vet_jogos[i].ano_lancamento; // Corrigido
 				entrada.ignore(2);
 				getline(entrada, vet_jogos[i].plataforma, '"');
 				entrada.ignore(2);
