@@ -69,7 +69,7 @@ void imprimirJogos(Jogo jogos[], int posicao){
 
 void menu_impressao(Jogo vet_Jogos[], int num_registros){
 	cout << endl << "Deseja que os dados do arquivo sejam impressos?" << endl
-	<< "0 - Nao" << endl << "1 - Sim" << endl;
+	<< "0 - Não" << endl << "1 - Sim" << endl;
 		int opcao_impressao=0;
 		cin >> opcao_impressao;
 		int inicio_impressao_partes, final_impressao_partes;
@@ -80,24 +80,28 @@ void menu_impressao(Jogo vet_Jogos[], int num_registros){
 			cout << endl << "Deseja o arquivo inteiro ou somente um trecho?" << endl
 			<< "2 - Inteiro" << endl << "3 - Trecho" << endl;
 			cin >> opcao_impressao;
-			if(opcao_impressao != 2 && opcao_impressao != 3)
+			if (opcao_impressao != 2 && opcao_impressao != 3){
 				cout << "ERRO! Tente novamente." << endl;
-				else if(opcao_impressao == 2)
+			}
+			else if (opcao_impressao == 2){
+				for (int i = 0; i < num_registros; i++){
+					imprimirJogos(vet_Jogos, i);
+				}
+			}
+			else if (opcao_impressao == 3){
+				cout << endl << "Digite o trecho" << endl;
+				cin >> inicio_impressao_partes >> final_impressao_partes;
+				if (inicio_impressao_partes < 1 || final_impressao_partes > num_registros || inicio_impressao_partes > final_impressao_partes){
+					cout << "ERRO! Tente novamente." << endl;
+				}
+				else {
 					for(int i = 0; i < num_registros; i++){
-						imprimirJogos(vet_Jogos, i);
+						if ((i+1 >= inicio_impressao_partes) && (i+1 <= final_impressao_partes)){
+							imprimirJogos(vet_Jogos, i);
+						}
 					}
-					else if (opcao_impressao == 3){
-						cout << endl << "Digite o trecho" << endl;
-						cin >> inicio_impressao_partes >> final_impressao_partes;
-						if(inicio_impressao_partes < 1 || final_impressao_partes > num_registros || inicio_impressao_partes > final_impressao_partes)
-							cout << "ERRO! Tente novamente." << endl;
-						else
-							for(int i = 0; i < num_registros; i++){
-								if ((i+1 >= inicio_impressao_partes) && (i+1 <= final_impressao_partes)){
-									imprimirJogos(vet_Jogos, i);
-								}
-							}
-					}
+				}
+			}
 		}
 }
 
@@ -120,6 +124,63 @@ void inserirJogos(Jogo*& vet_Jogos, int& capacidade, int& num_registros){
 	num_registros++;
 }
 
+void delecao(Jogo vet_Jogos[], int num_registros){
+	cout << endl << "Deseja apagar por plataforma, ano de lançamento ou nome?" << endl
+	<< "0 - Plataforma" << endl << "1 - Ano de lançamento" << endl << "2 - Nome" << endl;
+	int opcao_delecao;
+	cin >> opcao_delecao;
+	
+	switch(opcao_delecao){
+		case 0: {
+			cout << "Digite o nome da plataforma:" << endl;
+			string plat_delecao;
+			cin.ignore();
+			getline(cin, plat_delecao);
+			
+			for (int i=0; i<num_registros; i++){
+				if (vet_Jogos[i].plataforma == plat_delecao){
+					vet_Jogos[i].identificador = -1;
+				}
+			}
+			break;
+		}
+		case 1: {
+			cout << "Digite o ano de lançamento:" << endl;
+			int ano_delecao;
+			cin >> ano_delecao;
+			for (int i=0; i<num_registros; i++){
+				if (vet_Jogos[i].ano_lancamento == ano_delecao){
+					vet_Jogos[i].identificador = -1;
+				}
+			}
+			break;
+		}
+		case 2: {
+			cout << "Digite o nome do jogo:" << endl;
+			string nome_delecao;
+			cin.ignore();
+			getline(cin, nome_delecao);
+			for (int i=0; i<num_registros; i++){
+				if (vet_Jogos[i].nome == nome_delecao){
+					vet_Jogos[i].identificador = -1;
+				}
+			}
+			break;
+		}
+		default: {
+			cout << "ERRO! Tente novamente" << endl;
+			return delecao(vet_Jogos, num_registros);
+		}
+	}
+	
+		cout << "Processo concluído. Digite 1 para fazer outra deleção." << endl;
+		int opcao_repeticao;
+		cin >> opcao_repeticao;
+		if (opcao_repeticao == 1){
+			delecao(vet_Jogos, num_registros);
+		}
+}
+
 int main(){
 	int capacidade = 40;
 	int num_registros = 0;
@@ -133,6 +194,7 @@ int main(){
 	cout << "===========================================" << endl;
 	cout << "1 - IMPRIMIR GAMES" << endl;
 	cout << "2 - INSERIR GAMES" << endl;
+	cout << "3 - DELETAR GAMES" << endl;
 
 	cin >> opcao_menu;
 
@@ -143,11 +205,14 @@ int main(){
 		case 2:
 			inserirJogos(vet_Jogos, capacidade, num_registros);
 			break;
+		case 3:
+			delecao(vet_Jogos, num_registros);
+			break;
 		case 0:
 			cout << "Saindo do programa..." << endl;
 			break;
 		default:
-			cout << "Opcao invalida. Tente novamente." << endl;
+			cout << "Opção inválida. Tente novamente." << endl;
 	}
 
 	}
