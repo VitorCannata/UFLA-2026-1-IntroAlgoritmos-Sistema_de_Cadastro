@@ -24,8 +24,8 @@ void redimensionaVetor(Jogo*& jogos, int& capacidade_vetor){ // o Jogo*& serve p
 
 
 // Moudlarizar leitura
-void lerArquivo_CSV(Jogo*& jogos, int& capacidade, int& num_registros){ // o Jogo*& serve para que o parâmetro ocupe o mesmo espaço de memória do vetor original 
-	ifstream entrada("dados.csv");
+void lerArquivo_CSV(Jogo*& jogos, int& capacidade, int& num_registros, string nome_arquivo){ // o Jogo*& serve para que o parâmetro ocupe o mesmo espaço de memória do vetor original
+	ifstream entrada(nome_arquivo);
 	if(entrada){
 		string linha;
 		getline(entrada, linha); // ignora a primeira linha
@@ -105,7 +105,7 @@ void menu_impressao(Jogo vet_Jogos[], int num_registros){
 		}
 }
 
-void inserirJogos(Jogo*& vet_Jogos, int& capacidade, int& num_registros){
+void inserirJogos(Jogo*& vet_Jogos, int& capacidade, int& num_registros, string nome_arquivo){
 	if (num_registros == capacidade){
 		redimensionaVetor(vet_Jogos, capacidade);
 	}
@@ -122,9 +122,28 @@ void inserirJogos(Jogo*& vet_Jogos, int& capacidade, int& num_registros){
 	cout << "Digite a descricao do jogo: ";
 	getline(cin, vet_Jogos[num_registros].descricao);
 	num_registros++;
+	
+	cout << "Deseja adicionar outro? Digite 1 para 'sim'." << endl;
+	int opcao_repeticao;
+	cin >> opcao_repeticao;
+	if (opcao_repeticao == 1){
+		inserirJogos(vet_Jogos, capacidade, num_registros, nome_arquivo);
+	}
+	else {
+		cout << "Deseja salvar as alterações?" << endl
+		<< "0 - Não" << endl << "1- Sim (substituir)" << endl <<
+		"2 - Sim (criar outro arquivo)" << endl;
+		int opcao_salvar;
+		cin >> opcao_salvar;
+		
+		if ((opcao_salvar == 1) or (opcao_salvar == 2)){
+			salvar(vet_Jogos, opcao_salvar, nome_arquivo);			
+		}
+	}
 }
 
-void delecao(Jogo vet_Jogos[], int num_registros){
+
+void delecao(Jogo*& vet_Jogos[], int& num_registros, string nome_arquivo){
 	cout << endl << "Deseja apagar por plataforma, ano de lançamento ou nome?" << endl
 	<< "0 - Plataforma" << endl << "1 - Ano de lançamento" << endl << "2 - Nome" << endl;
 	int opcao_delecao;
@@ -179,13 +198,43 @@ void delecao(Jogo vet_Jogos[], int num_registros){
 		if (opcao_repeticao == 1){
 			delecao(vet_Jogos, num_registros);
 		}
+		else {
+			cout << "Deseja salvar as alterações?" << endl
+			<< "0 - Não" << endl << "1- Sim (substituir)" << endl <<
+			"2 - Sim (criar outro arquivo)" << endl;
+			int opcao_salvar;
+			cin >> opcao_salvar;
+			
+			if ((opcao_salvar == 1) or (opcao_salvar == 2)){
+				salvar(vet_Jogos, opcao_salvar, nome_arquivo)
+			}
+		}
+}
+
+
+void salvar(Jogo vet_Jogos[], int opcao_salvar, string nome_arquivo) {
+	if (opcao_salvar == 1){
+		ofstream saida(nome_arquivo);
+		...
+	}
+	if (opcao_salvar == 2){
+		string nome_novo;
+		cout << "Digite um nome para um novo arquivo .csv" << endl;
+		cin >> nome_novo;
+		ofstream saida(nome_novo);
+		...
+	}
 }
 
 int main(){
 	int capacidade = 40;
 	int num_registros = 0;
 	Jogo* vet_Jogos = new Jogo[capacidade];
-	lerArquivo_CSV(vet_Jogos, capacidade, num_registros);
+	cout << "Digite o nome do arquivo: " << endl;
+	string nome_arquivo;
+	cin.ignore()
+	getline(cin, nome_arquivo);
+	lerArquivo_CSV(vet_Jogos, capacidade, num_registros, nome_arquivo);
 	int opcao_menu=-1;
 
 	while(opcao_menu != 0){
@@ -203,10 +252,10 @@ int main(){
 			menu_impressao(vet_Jogos, num_registros);
 			break;
 		case 2:
-			inserirJogos(vet_Jogos, capacidade, num_registros);
+			inserirJogos(vet_Jogos, capacidade, num_registros, nome_arquivo);
 			break;
 		case 3:
-			delecao(vet_Jogos, num_registros);
+			delecao(vet_Jogos, num_registros, nome_arquivo);
 			break;
 		case 0:
 			cout << "Saindo do programa..." << endl;
@@ -214,7 +263,6 @@ int main(){
 		default:
 			cout << "Opção inválida. Tente novamente." << endl;
 	}
-
 	}
 	
 	return 0;
