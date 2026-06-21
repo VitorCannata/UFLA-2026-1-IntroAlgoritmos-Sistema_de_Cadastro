@@ -64,25 +64,16 @@ void lerArquivo_CSV(Jogo*& jogos, int& capacidade, int& num_registros){ // o Jog
 void imprimirJogos(Jogo jogos[], int posicao){
 	if(jogos[posicao].identificador != -1){
 		cout << endl 
-		<< jogos[posicao].identificador << " " 
-		<< jogos[posicao].nome << " " 
-		<< jogos[posicao].ano_lancamento << " " 
-
-		<< jogos[posicao].plataforma << " " 
+		<< jogos[posicao].identificador << ": " 
+		<< jogos[posicao].nome << ", " 
+		<< jogos[posicao].ano_lancamento << ", " 
+		<< jogos[posicao].plataforma << ", " 
 		<< jogos[posicao].descricao << endl;
 	}
 }
 
 void menu_impressao(Jogo vet_Jogos[], int num_registros){
-	cout << endl << "Deseja que os dados do arquivo sejam impressos?" << endl
-	<< "0 - Não" << endl << "1 - Sim" << endl;
-		int opcao_impressao=0;
-		cin >> opcao_impressao;
 		int inicio_impressao_partes, final_impressao_partes;
-		if ((opcao_impressao != 0) && (opcao_impressao != 1)){
-			cout << "ERRO! Tente novamente." << endl;
-		}
-		if (opcao_impressao == 1){
 			cout << endl << "Deseja o arquivo inteiro ou somente um trecho?" << endl
 			<< "1 - Inteiro" << endl << "2 - Trecho" << endl;
 			int opcao_menu;
@@ -109,9 +100,55 @@ void menu_impressao(Jogo vet_Jogos[], int num_registros){
 					}
 				}
 			}
-		}
 }
 
+void pesquisarJogos(Jogo vet_Jogos[], int num_registros){
+	cout << "Gostaria de pesquisar por qual categoria?" << endl
+	<< "1 - NOME (Escreva corretamente)" << endl << "2 - Plataforma" <<
+	endl << "3 - Ano de lançamento" << endl;
+	int opcao_pesquisa;
+	cin >> opcao_pesquisa;
+	string texto_pesquisa;
+	int ano_pesquisa;
+	
+	switch(opcao_pesquisa){
+		case 1:{
+			cout << "Digite o nome: " << endl;
+			cin.ignore();
+			getline(cin, texto_pesquisa);
+			for (int i=0; i<num_registros; i++){
+				if (texto_pesquisa == vet_Jogos[i].nome){
+					imprimirJogos(vet_Jogos, i);
+				}
+			}
+			break;
+		}
+		case 2:{
+			cout << "Digite a plataforma: " << endl;
+			cin.ignore();
+			getline(cin, texto_pesquisa);
+			for (int i=0; i<num_registros; i++){
+				if (texto_pesquisa == vet_Jogos[i].plataforma){
+					imprimirJogos(vet_Jogos, i);
+				}
+			}
+			break;
+		}
+		case 3:{
+			cout << "Digite o ano: " << endl;
+			cin >> ano_pesquisa;
+			for (int i=0; i<num_registros; i++){
+				if (ano_pesquisa == vet_Jogos[i].ano_lancamento){
+					imprimirJogos(vet_Jogos, i);
+				}
+			}
+			break;
+		}
+		default:
+			cout << "Opção inválida. Tente novamente." << endl;
+			break;
+	}
+}
 
 void salvar(Jogo vet_Jogos[], int opcao_salvar, int num_registros, int num_registos_noCSV);
 // o campo num_registos_noCSV é necessário para que o número de registros seja atualizado corretamente no arquivo CSV, já que o campo num_registros pode conter jogos deletados (com identificador -1) e não deve ser considerado para a contagem de registros no arquivo CSV
@@ -152,10 +189,7 @@ void inserirJogos(Jogo*& vet_Jogos, int& capacidade, int& num_registros){
 		}
 	}*/
 
-	cout << "Deseja adicionar um jogo?" << endl;
-	cout << "0 - Não" << endl << "1 - Sim" << endl;
-	int opcao_insercao;
-	cin >> opcao_insercao;
+	int opcao_insercao=1;
 	while (opcao_insercao == 1){
 		if (num_registros == capacidade){
 			redimensionaVetor(vet_Jogos, capacidade);
@@ -281,18 +315,19 @@ void delecao(Jogo*& vet_Jogos, int& num_registros){
 
 
 void salvar(Jogo vet_Jogos[], int opcao_salvar, int num_registros, int num_registos_noCSV) {
-
+	int identificador_final=1;
 	if (opcao_salvar == 1){
 		ofstream saidaDadosCSV("dados.csv", ios::trunc); // trunc apaga o conteúdo do arquivo antes de reescrever
 		saidaDadosCSV << "identificador" << ";" << "nome" << ";" << "ano_lancamento" << ";" << "plataforma" << ";" << "descricao" << endl;
 		saidaDadosCSV << num_registos_noCSV << endl;
 		for(int i=0; i<num_registros; i++){
 			if (vet_Jogos[i].identificador != -1){
-				saidaDadosCSV << vet_Jogos[i].identificador << ";\"" 
+				saidaDadosCSV << identificador_final << ";\"" 
 				<< vet_Jogos[i].nome << "\";" 
 				<< vet_Jogos[i].ano_lancamento << ";\"" 
 				<< vet_Jogos[i].plataforma << "\";\"" 
 				<< vet_Jogos[i].descricao << "\"" << endl;
+				identificador_final++;
 			}
 		}
 
@@ -308,11 +343,12 @@ void salvar(Jogo vet_Jogos[], int opcao_salvar, int num_registros, int num_regis
 			saidaNova << num_registos_noCSV << endl;
 			for(int i=0; i<num_registros; i++){
 				if (vet_Jogos[i].identificador != -1){
-					saidaNova << vet_Jogos[i].identificador << ";\"" 
+					saidaNova << identificador_final << ";\"" 
 					<< vet_Jogos[i].nome << "\";" 
 					<< vet_Jogos[i].ano_lancamento << ";\"" 
 					<< vet_Jogos[i].plataforma << "\";\"" 
 					<< vet_Jogos[i].descricao << "\"" << endl;
+					identificador_final++;
 				}
 			}
 		}
@@ -337,8 +373,9 @@ int main(){
 		cout << "                 GAMES                     " << endl;
 		cout << "===========================================" << endl;
 		cout << "1 - IMPRIMIR GAMES" << endl;
-		cout << "2 - INSERIR GAMES" << endl;
-		cout << "3 - DELETAR GAMES" << endl;
+		cout << "2 - PESQUISAR GAMES" << endl;
+		cout << "3 - INSERIR GAMES" << endl;
+		cout << "4 - DELETAR GAMES" << endl;
 		cout << "0 - SAIR" << endl;
 
 		cin >> opcao_menu;
@@ -348,9 +385,12 @@ int main(){
 				menu_impressao(vet_Jogos, num_registros);
 				break;
 			case 2:
-				inserirJogos(vet_Jogos, capacidade, num_registros);
+				pesquisarJogos(vet_Jogos, num_registros);
 				break;
 			case 3:
+				inserirJogos(vet_Jogos, capacidade, num_registros);
+				break;
+			case 4:
 				delecao(vet_Jogos, num_registros);
 				break;
 			case 0:
