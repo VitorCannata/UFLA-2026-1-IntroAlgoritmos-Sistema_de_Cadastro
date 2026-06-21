@@ -276,28 +276,8 @@ void delecao(Jogo*& vet_Jogos, int& num_registros){
 				return delecao(vet_Jogos, num_registros);
 			}
 		}
-
-			int contNum_registros = 0;
-
-			for(int i=0;i<num_registros;i++){
-				if(vet_Jogos[i].identificador != -1){
-					contNum_registros++;
-				}
-			}
-
-			cout << "Deseja salvar as alterações?" << endl
-			<< "0 - Não" << endl << "1- Sim (substituir)" << endl <<
-			"2 - Sim (criar outro arquivo)" << endl;
-			int opcao_salvar;
-			cin >> opcao_salvar;
 			
-			if ((opcao_salvar == 1) || (opcao_salvar == 2)){
-				salvar(vet_Jogos, opcao_salvar, num_registros, contNum_registros);
-			}
-
-
-
-			cout << endl << "Deseja apagar por plataforma, ano de lançamento ou nome?" << endl
+			cout << endl << "Concluído. Deseja apagar por plataforma, ano de lançamento ou nome?" << endl
 			<< "0 - Plataforma" << endl << "1 - Ano de lançamento" << endl << "2 - Nome" << endl << "3 - Não apagar mais" << endl;
 			cin >> opcao_delecao;
 	}
@@ -313,6 +293,135 @@ void delecao(Jogo*& vet_Jogos, int& num_registros){
 		
 }
 
+void ordenar(Jogo vet_Jogos[], int num_registros){
+	cout << "Como gostaria de ordenar?" << endl <<
+	"0 - Nome" << endl << "1 - Ano de lançamento" << endl
+	<< "2 - Plataforma" << endl;
+	int opcao_ordenar;
+	cin >> opcao_ordenar;
+	
+	//Método shell sort
+	int gap[12] = {1, 3, 5, 9, 14, 22, 30, 40, 51, 72, 80, 101};
+	int j, coluna_gap;
+	for (int i=0; i<12; i++){
+		if (gap[i] >= num_registros){
+			coluna_gap = i-1;
+			i = 11;
+		}
+	}
+	
+	switch(opcao_ordenar){
+		case 0:{
+			while (coluna_gap >= 0){
+				for (int i=0; i<num_registros; i++){
+					j = i+gap[coluna_gap];
+					while (j < num_registros){
+						if (vet_Jogos[i].nome[0] > vet_Jogos[j].nome[0]){
+							Jogo aux = vet_Jogos[j];
+							for (int k=j; k>i; k--){
+								vet_Jogos[k] = vet_Jogos[k-1];
+							}
+							vet_Jogos[i] = aux;
+						}
+						if (vet_Jogos[i].nome[0] == vet_Jogos[j].nome[0]){
+							int local_caracter=1;
+							while (vet_Jogos[i].nome[local_caracter] == vet_Jogos[j].nome[local_caracter]){
+								local_caracter++;
+							}
+							if (vet_Jogos[i].nome[local_caracter] > vet_Jogos[j].nome[local_caracter]){
+								Jogo aux = vet_Jogos[j];
+								for (int k=j; k>i; k--){
+									vet_Jogos[k] = vet_Jogos[k-1];
+								}
+								vet_Jogos[i] = aux;
+							}
+						}
+						j += gap[coluna_gap];
+					}
+				}
+				coluna_gap--;
+			}
+			menu_impressao(vet_Jogos, num_registros);
+			break;
+		}				
+		case 1:{
+			while (coluna_gap >= 0){
+				for (int i=0; i<num_registros; i++){
+					j = i+gap[coluna_gap];
+					while (j < num_registros){
+						if (vet_Jogos[i].ano_lancamento > vet_Jogos[j].ano_lancamento){
+							Jogo aux = vet_Jogos[j];
+							for (int k=j; k>i; k--){
+								vet_Jogos[k] = vet_Jogos[k-1];
+							}
+							vet_Jogos[i] = aux;
+						}
+						j += gap[coluna_gap];
+					}
+				}
+				coluna_gap--;
+			}
+			menu_impressao(vet_Jogos, num_registros);
+			break;
+		}
+		case 2:{
+			while (coluna_gap >= 0){
+				for (int i=0; i<num_registros; i++){
+					j = i+gap[coluna_gap];
+					while (j < num_registros){
+						if (vet_Jogos[i].plataforma[0] > vet_Jogos[j].plataforma[0]){
+							Jogo aux = vet_Jogos[j];
+							for (int k=j; k>i; k--){
+								vet_Jogos[k] = vet_Jogos[k-1];
+							}
+							vet_Jogos[i] = aux;
+						}
+						if (vet_Jogos[i].plataforma[0] == vet_Jogos[j].plataforma[0]){
+							int local_caracter=1;
+							while (vet_Jogos[i].plataforma[local_caracter] == vet_Jogos[j].plataforma[local_caracter]){
+								local_caracter++;
+							}
+							if (vet_Jogos[i].plataforma[local_caracter] > vet_Jogos[j].plataforma[local_caracter]){
+								Jogo aux = vet_Jogos[j];
+								for (int k=j; k>i; k--){
+									vet_Jogos[k] = vet_Jogos[k-1];
+								}
+								vet_Jogos[i] = aux;
+							}
+						}
+						j += gap[coluna_gap];
+					}
+				}
+				coluna_gap--;
+			}
+			menu_impressao(vet_Jogos, num_registros);
+			break;
+		}		
+		default:{
+			cout << "Opção inválida. Tente novamente." << endl;
+			break;
+		}
+	}
+	}
+	
+void opcao_salvar(Jogo vet_Jogos[], int num_registros){
+	cout << "Como gostaria de salvar?" << endl
+			<< "1 - Substituir" << endl <<
+			"2 - Criar outro arquivo" << endl;
+			int opcao_salvar;
+			cin >> opcao_salvar;
+			
+			int contNum_registros = 0;
+			for (int i=0;i<num_registros;i++){
+				if(vet_Jogos[i].identificador != -1){
+					contNum_registros++;
+				}
+			}
+			
+			if ((opcao_salvar == 1) || (opcao_salvar == 2)){
+				salvar(vet_Jogos, opcao_salvar, num_registros, contNum_registros);
+			}	
+}
 
 void salvar(Jogo vet_Jogos[], int opcao_salvar, int num_registros, int num_registos_noCSV) {
 	int identificador_final=1;
@@ -376,6 +485,8 @@ int main(){
 		cout << "2 - PESQUISAR GAMES" << endl;
 		cout << "3 - INSERIR GAMES" << endl;
 		cout << "4 - DELETAR GAMES" << endl;
+		cout << "5 - ORDENAR GAMES" << endl;
+		cout << "6 - SALVAR ALTERAÇÕES" << endl;
 		cout << "0 - SAIR" << endl;
 
 		cin >> opcao_menu;
@@ -393,13 +504,19 @@ int main(){
 			case 4:
 				delecao(vet_Jogos, num_registros);
 				break;
+			case 5:
+				ordenar(vet_Jogos, num_registros);
+				break;
+			case 6:
+				opcao_salvar(vet_Jogos, num_registros);
+				break;
 			case 0:
 				cout << "Saindo do programa..." << endl;
 				break;
 			default:
 				cout << "Opção inválida. Tente novamente." << endl;
 		}
-		}
+	}
 
 	delete[] vet_Jogos;
 		
