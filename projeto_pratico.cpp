@@ -295,108 +295,55 @@ void delecao(Jogo*& vet_Jogos, int& num_registros){
 
 void ordenar(Jogo vet_Jogos[], int num_registros){
 	cout << "Como gostaria de ordenar?" << endl <<
-	"0 - Nome" << endl << "1 - Ano de lançamento" << endl
-	<< "2 - Plataforma" << endl;
+	"0 - Nome" << endl << "1 - Ano de lançamento" << endl;
 	int opcao_ordenar;
 	cin >> opcao_ordenar;
 	
-	//Método shell sort
-	int gap[12] = {1, 3, 5, 9, 14, 22, 30, 40, 51, 72, 80, 101};
-	int j, coluna_gap;
-	for (int i=0; i<12; i++){
-		if (gap[i] >= num_registros){
-			coluna_gap = i-1;
-			i = 11;
-		}
-	}
-	
 	switch(opcao_ordenar){
 		case 0:{
-			while (coluna_gap >= 0){
-				for (int i=0; i<num_registros; i++){
-					j = i+gap[coluna_gap];
-					while (j < num_registros){
-						if (vet_Jogos[i].nome[0] > vet_Jogos[j].nome[0]){
-							Jogo aux = vet_Jogos[j];
-							for (int k=j; k>i; k--){
-								vet_Jogos[k] = vet_Jogos[k-1];
-							}
-							vet_Jogos[i] = aux;
-						}
-						if (vet_Jogos[i].nome[0] == vet_Jogos[j].nome[0]){
-							int local_caracter=1;
-							while (vet_Jogos[i].nome[local_caracter] == vet_Jogos[j].nome[local_caracter]){
-								local_caracter++;
-							}
-							if (vet_Jogos[i].nome[local_caracter] > vet_Jogos[j].nome[local_caracter]){
-								Jogo aux = vet_Jogos[j];
-								for (int k=j; k>i; k--){
-									vet_Jogos[k] = vet_Jogos[k-1];
-								}
-								vet_Jogos[i] = aux;
-							}
-						}
-						j += gap[coluna_gap];
+			//Insertion sort
+			for (int i=1; i<num_registros; i++){
+					Jogo pivo = vet_Jogos[i];
+					int j = i-1;
+					while(j >= 0 && pivo.nome < vet_Jogos[j].nome){
+						vet_Jogos[j + 1] = vet_Jogos[j];
+						j--;
 					}
-				}
-				coluna_gap--;
+
+					vet_Jogos[j + 1] = pivo;
 			}
-			menu_impressao(vet_Jogos, num_registros);
+			cout << "Ordenação concluída." << endl;
 			break;
 		}				
 		case 1:{
-			while (coluna_gap >= 0){
-				for (int i=0; i<num_registros; i++){
-					j = i+gap[coluna_gap];
-					while (j < num_registros){
-						if (vet_Jogos[i].ano_lancamento > vet_Jogos[j].ano_lancamento){
-							Jogo aux = vet_Jogos[j];
-							for (int k=j; k>i; k--){
-								vet_Jogos[k] = vet_Jogos[k-1];
-							}
-							vet_Jogos[i] = aux;
-						}
-						j += gap[coluna_gap];
-					}
+			//Método shell sort
+			int gap[9] = {1,4,10,23,57,132,301,701,1750};
+			int coluna_gap;
+			for (int i=0; i<9; i++){
+				if (gap[i] >= num_registros){
+					coluna_gap = i-1;
+					i = 8;
 				}
+			}
+			
+			while (coluna_gap >= 0) {
+				int h = gap[coluna_gap];
+				for (int i = h; i < num_registros; i++) {
+					Jogo temp = vet_Jogos[i];
+					int j = i;
+	
+					while (j >= h && vet_Jogos[j - h].ano_lancamento > temp.ano_lancamento){
+						vet_Jogos[j] = vet_Jogos[j - h];
+						j -= h;
+					}
+					vet_Jogos[j] = temp;
+				}
+
 				coluna_gap--;
 			}
-			menu_impressao(vet_Jogos, num_registros);
+			cout << "Ordenação concluída." << endl;
 			break;
-		}
-		case 2:{
-			while (coluna_gap >= 0){
-				for (int i=0; i<num_registros; i++){
-					j = i+gap[coluna_gap];
-					while (j < num_registros){
-						if (vet_Jogos[i].plataforma[0] > vet_Jogos[j].plataforma[0]){
-							Jogo aux = vet_Jogos[j];
-							for (int k=j; k>i; k--){
-								vet_Jogos[k] = vet_Jogos[k-1];
-							}
-							vet_Jogos[i] = aux;
-						}
-						if (vet_Jogos[i].plataforma[0] == vet_Jogos[j].plataforma[0]){
-							int local_caracter=1;
-							while (vet_Jogos[i].plataforma[local_caracter] == vet_Jogos[j].plataforma[local_caracter]){
-								local_caracter++;
-							}
-							if (vet_Jogos[i].plataforma[local_caracter] > vet_Jogos[j].plataforma[local_caracter]){
-								Jogo aux = vet_Jogos[j];
-								for (int k=j; k>i; k--){
-									vet_Jogos[k] = vet_Jogos[k-1];
-								}
-								vet_Jogos[i] = aux;
-							}
-						}
-						j += gap[coluna_gap];
-					}
-				}
-				coluna_gap--;
-			}
-			menu_impressao(vet_Jogos, num_registros);
-			break;
-		}		
+		}	
 		default:{
 			cout << "Opção inválida. Tente novamente." << endl;
 			break;
