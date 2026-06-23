@@ -1,4 +1,7 @@
 # Projeto Prático de IALG
+
+REVISAR O CÓDIGO!
+
 Condições a serem seguidas:
 1. (FEITO!) A aplicação deverá inicialmente carregar os dados do arquivo csv em um vetor alocado dinamicamente. O tamanho inicial do vetor deverá ser capaz de suportar 40 elementos, sendo redimensionado de acordo com a necessidade. A operação de redimensionamento deve adicionar 5 ou 10 posições a cada operação. 
 2. (FEITO!) Deve ser possível inserir um novo elemento. Nesse caso, a inserção será realizada no final do vetor. Opcionalmente, vocês também podem optar por fazer uma inserção ordenada, para facilitar o uso de busca binária (ou seja, o elemento é inserido de forma a manter os dados ordenados). 
@@ -7,7 +10,7 @@ Condições a serem seguidas:
 5. (FEITO!) Deve ser possível buscar um registro, utilizando-se um dos campos. Nesse caso, deve ser possível fazer a busca por pelo menos duas formas diferentes  (no nosso exemplo: por nome ou por idade ou por endereço). Para cada um desses campos, deve ser implementada uma forma de busca (recursiva ou iterativa). Note, que para fazer busca binária, os dados deverão estar ordenados.
 6. (FEITO!) Deve ser possível mostrar na tela tanto o arquivo inteiro, como um trecho informado pelo usuário. Por exemplo, deve ser possível mostrar do décimo ao vigésimo elemento do arquivo. A impressão deve ser realizada na ordem em que estão armazenados. 
 7. (FEITO!) Deve ser possível ordenar os dados por pelo menos dois dos campos  do registro. No exemplo dado, a aplicação poderia dar a opção de ordenar por nome ou idade. A ordenação deverá ser feita em memória (todos os dados do arquivo são lidos em um vetor na memória e então ordenados). Como já comentado anteriormente, antes do término da aplicação (ou logo após a ordenação), deve haver a opção de gravar as alterações no arquivo. Para ordenação, deverá ser utilizado um dos métodos apresentados em sala de aula. Não é permitido utilizar o bubblesort ou suas variantes.
-8. (PENDENTE) Um relatório com o mínimo de formalismo, considerando os nomes completos dos componentes do grupo, uma fonte de tamanho razoável (preferencialmente 12), e com tamanho desejado de 3 páginas. O relatório deverá obrigatoriamente conter:
+8. (FEITO!) Um relatório com o mínimo de formalismo, considerando os nomes completos dos componentes do grupo, uma fonte de tamanho razoável (preferencialmente 12), e com tamanho desejado de 3 páginas. O relatório deverá obrigatoriamente conter:
   Uma breve introdução sobre o trabalho em si;
   Uma descrição em alto nível (isto é, sem código) de todas as estruturas utilizadas explicando a lógica do programa;
   Uma descrição da ordem dos dados armazenados no arquivo;
