@@ -188,8 +188,7 @@ void inserirJogos(Jogo*& vet_Jogos, int& capacidade, int& num_registros){
 		if (num_registros == capacidade){
 			redimensionaVetor(vet_Jogos, capacidade);
 		}
-		int identificador_novo = num_registros;
-		vet_Jogos[num_registros].identificador = identificador_novo;
+		vet_Jogos[num_registros].identificador = num_registros;
 		cout << "Digite o nome: ";
 		cin.ignore();
 		getline(cin, vet_Jogos[num_registros].nome);
