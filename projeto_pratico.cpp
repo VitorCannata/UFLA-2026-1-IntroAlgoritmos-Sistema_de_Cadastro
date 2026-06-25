@@ -222,7 +222,7 @@ void delecao(Jogo*& vet_Jogos, int& num_registros){
 				getline(cin, nome_delecao);
 				
 				for (int i=0; i< num_registros; i++){
-					if (vet_Jogos[i].nome == nome_delecao and vet_Jogos[i].identificador != -1){
+					if ((vet_Jogos[i].nome == nome_delecao) and (vet_Jogos[i].identificador != -1)){
 						vet_Jogos[i].identificador = -1; // O jogo não é deletado, mas sim marcado
 					}
 				}
@@ -249,7 +249,7 @@ void delecao(Jogo*& vet_Jogos, int& num_registros){
 				cin >> ano_delecao;
 				
 				for (int i=0; i< num_registros; i++){
-					if (vet_Jogos[i].ano_lancamento == ano_delecao and vet_Jogos[i].identificador != -1){
+					if ((vet_Jogos[i].ano_lancamento == ano_delecao) and (vet_Jogos[i].identificador != -1)){
 						vet_Jogos[i].identificador = -1;
 					}
 				}
@@ -282,7 +282,7 @@ void ordenar(Jogo vet_Jogos[], int num_registros){
 					Jogo pivo = vet_Jogos[i];
 					int j = i-1;
 					
-					while(j >= 0 and pivo.nome < vet_Jogos[j].nome){
+					while ((j >= 0) and (pivo.nome < vet_Jogos[j].nome)){
 						vet_Jogos[j + 1] = vet_Jogos[j];
 						j--;
 					}
@@ -309,7 +309,7 @@ void ordenar(Jogo vet_Jogos[], int num_registros){
 					Jogo temp = vet_Jogos[i];
 					int j = i;
 	
-					while (j >= h and vet_Jogos[j - h].ano_lancamento > temp.ano_lancamento){
+					while ((j >= h) and (vet_Jogos[j - h].ano_lancamento > temp.ano_lancamento)){
 						vet_Jogos[j] = vet_Jogos[j - h];
 						j -= h;
 					}
