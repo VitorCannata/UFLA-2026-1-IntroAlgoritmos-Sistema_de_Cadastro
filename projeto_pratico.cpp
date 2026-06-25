@@ -231,12 +231,12 @@ void delecao(Jogo*& vet_Jogos, int& num_registros){
 			}
 			case 2: {
 				cout << "Digite o nome da plataforma:" << endl;
-				string plat_delecao;
+				string plataforma_delecao;
 				cin.ignore();
-				getline(cin, plat_delecao);
+				getline(cin, plataforma_delecao);
 				
 				for (int i=0; i< num_registros; i++){
-					if (vet_Jogos[i].plataforma == plat_delecao and vet_Jogos[i].identificador != -1){ // o campo identificador != -1 é necessário para que jogos já deletados não sejam considerados para deleção novamente, o que poderia causar a contagem de registros no arquivo CSV ficar incorreta
+					if ((vet_Jogos[i].plataforma == plataforma_delecao) and (vet_Jogos[i].identificador != -1)){ // o campo identificador != -1 é necessário para que jogos já deletados não sejam considerados para deleção novamente, o que poderia causar a contagem de registros no arquivo CSV ficar incorreta
 						vet_Jogos[i].identificador = -1;
 					}
 				}
@@ -295,16 +295,16 @@ void ordenar(Jogo vet_Jogos[], int num_registros){
 		case 2:{
 			// Shell sort
 			int gap[9] = {1,4,10,23,57,132,301,701,1750};
-			int coluna_gap;
+			int indice_gap;
 			for (int i=0; i<9; i++){
 				if (gap[i] >= num_registros){
-					coluna_gap = i-1;
+					indice_gap = i-1;
 					i = 8;
 				}
 			}
 			
-			while (coluna_gap >= 0) {
-				int h = gap[coluna_gap];
+			while (indice_gap >= 0) {
+				int h = gap[indice_gap];
 				for (int i = h; i < num_registros; i++) {
 					Jogo temp = vet_Jogos[i];
 					int j = i;
@@ -316,7 +316,7 @@ void ordenar(Jogo vet_Jogos[], int num_registros){
 					vet_Jogos[j] = temp;
 				}
 
-				coluna_gap--;
+				indice_gap--;
 			}
 			cout << "Ordenação concluída." << endl;
 			break;
